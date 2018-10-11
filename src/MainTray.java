@@ -8,7 +8,7 @@ import java.util.TimerTask;
 
 public class MainTray {
 
-	static ImageLoader imageLoader = new ImageLoader();
+	static ImgLoader imgLoader = new ImgLoader();
 
 	// create a class for use TimerTask and run update image at specific time (Midnight)
 	private static class MyTimeTask extends TimerTask
@@ -16,7 +16,7 @@ public class MainTray {
 
 	    public void run()
 	    {
-			imageLoader.updateImage();
+			imgLoader.updateImage();
 	    }
 	}
 	
@@ -24,7 +24,7 @@ public class MainTray {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		imageLoader.loadImage();
+		imgLoader.loadImage();
     	
 		// Create date format for today and tomorrow and set specific time(5 second after midnight) that run updateImage() method
 		try {

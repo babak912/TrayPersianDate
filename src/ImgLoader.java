@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.Calendar;
 
 
-public class ImageLoader {
+public class ImgLoader {
 	
 	final String EXIT = "خروج";
 	final String COPY_DATE="ذخيره تاريخ";
@@ -30,12 +30,7 @@ public class ImageLoader {
 		PersianCalendar persianCalendar = new PersianCalendar(Calendar.getInstance());
 
 
-		if(persianCalendar.getMonth()<12){
-			persianCalendar.addMonth(1);
-		}
-		
-		today= String.valueOf(persianCalendar.getDate());
-
+		today = printToday(persianCalendar);
 		
 		SystemTray tray = SystemTray.getSystemTray();
 	     
@@ -153,11 +148,7 @@ public class ImageLoader {
 
 		PersianCalendar updateCalendar = new PersianCalendar(Calendar.getInstance());
 
-		if(updateCalendar.getMonth()<12){
-			updateCalendar.addMonth(1);
-		}
-		
-		today= String.valueOf(updateCalendar.getDate());
+		today = printToday(updateCalendar);
 
 		URL url = getClass().getResource("/img/"+(updateCalendar.getDayOfMonth())+".png");
 	    Image image = Toolkit.getDefaultToolkit().getImage(url);
@@ -165,6 +156,16 @@ public class ImageLoader {
 		 trayIcon.setToolTip(today);
 		 
 		
+	}
+	
+	public String printToday(PersianCalendar pCal){
+		if(pCal.getMonth()<12){
+//			updateCalendar.addMonth(1);
+			int realMonth = pCal.getMonth()+1;
+		}
+		
+		int realMonth = pCal.getMonth()+1;
+		return pCal.getYear() +"/"+realMonth+"/"+pCal.getDayOfMonth();
 	}
 
 	
