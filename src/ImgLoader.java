@@ -12,7 +12,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import sun.util.calendar.BaseCalendar.Date;
 
 
 public class ImgLoader {
@@ -30,7 +35,7 @@ public class ImgLoader {
 		PersianCalendar persianCalendar = new PersianCalendar(Calendar.getInstance());
 
 
-		today = printToday(persianCalendar);
+		today = getMyToday(persianCalendar);
 		
 		SystemTray tray = SystemTray.getSystemTray();
 	     
@@ -45,11 +50,48 @@ public class ImgLoader {
 		    MouseListener mouseListener = new MouseListener() {
 		                
 		        public void mouseClicked(MouseEvent e) {
-//		            System.out.println("Tray Icon - Mouse clicked!");                 
+//		            System.out.println("Tray Icon - Mouse clicked!");
+		        	
+		        	Calendar myCal = Calendar.getInstance();
+		        	int backDays= persianCalendar.getDayOfMonth();
+		        	myCal.add(Calendar.DATE,-backDays);
+		        	int miladiYear = myCal.get(Calendar.YEAR);
+		        	int miladiMonth =myCal.get(Calendar.MONTH)+1;
+		        	int miladiday = myCal.get(Calendar.DATE);
+		        	System.out.println(miladiday);
+//		        	System.out.println(myCal.getTime());
+//		        	System.out.println(myCal.get(Calendar.DAY_OF_WEEK));
+//		        	String[] weekDays = {"شنبه","یکشنبه","دوشنبه","سه شنبه","چهارشنبه","پنجشنبه","جمعه"};
+		        	
+		        	
+		        	
+		        	for(int i=miladiday;i<miladiday+backDays;i++) {
+		        		String finalDay="";
+		        		PersianCalendar.DateStruct persianDate = PersianCalendar.gregorianToPersian(miladiYear, miladiMonth, i);
+		        		String input_date=i+"/"+miladiMonth+"/"+miladiYear;
+			        	  SimpleDateFormat format1=new SimpleDateFormat("dd/MM/yyyy");
+			        	  java.util.Date dt1;
+						try {
+							dt1 = format1.parse(input_date);
+							DateFormat format2=new SimpleDateFormat("EEEE"); 
+							finalDay=format2.format(dt1);
+//							System.out.println(finalDay);
+						} catch (ParseException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+		        		System.out.println(finalDay+ "= "+persianDate.getDay());
+		        		
+		        	}
+		            
+		            
+		            
+		            
 		        }
 
 		        public void mouseEntered(MouseEvent e) {
-//		            System.out.println("Tray Icon - Mouse entered!");                 
+//		            System.out.println("Tray Icon - Mouse entered!");
+		        	
 		        }
 
 		        public void mouseExited(MouseEvent e) {
@@ -148,7 +190,7 @@ public class ImgLoader {
 
 		PersianCalendar updateCalendar = new PersianCalendar(Calendar.getInstance());
 
-		today = printToday(updateCalendar);
+		today = getMyToday(updateCalendar);
 
 		URL url = getClass().getResource("/img/"+(updateCalendar.getDayOfMonth())+".png");
 	    Image image = Toolkit.getDefaultToolkit().getImage(url);
@@ -158,13 +200,20 @@ public class ImgLoader {
 		
 	}
 	
-	public String printToday(PersianCalendar pCal){
+	private int getMyMonth(PersianCalendar pCal) {
+		int realMonth=0;
 		if(pCal.getMonth()<12){
-//			updateCalendar.addMonth(1);
-			int realMonth = pCal.getMonth()+1;
+			realMonth = pCal.getMonth()+1;
 		}
 		
-		int realMonth = pCal.getMonth()+1;
+		return realMonth;
+		
+	}
+	
+	public String getMyToday(PersianCalendar pCal){
+		
+		
+		int realMonth = getMyMonth(pCal)+1;
 		return pCal.getYear() +"/"+realMonth+"/"+pCal.getDayOfMonth();
 	}
 
